@@ -13,6 +13,10 @@ namespace Trivia
 
         private readonly bool[] _inPenaltyBox = new bool[6];
 
+        private int allQuestions = 50;
+
+        public bool IsPlayable;
+
         private readonly LinkedList<string> _popQuestions = new LinkedList<string>();
         private readonly LinkedList<string> _scienceQuestions = new LinkedList<string>();
         private readonly LinkedList<string> _sportsQuestions = new LinkedList<string>();
@@ -23,23 +27,22 @@ namespace Trivia
 
         public Game()
         {
-            for (var i = 0; i < 50; i++)
+            for (var i = 0; i < allQuestions; i++)
             {
                 _popQuestions.AddLast("Pop Question " + i);
                 _scienceQuestions.AddLast(("Science Question " + i));
                 _sportsQuestions.AddLast(("Sports Question " + i));
-                _rockQuestions.AddLast(CreateRockQuestion(i));
+                _rockQuestions.AddLast(" Rock Question" (i));
             }
         }
 
-        public string CreateRockQuestion(int index)
+        //if lower than 2 then we cannot play
+        void Update()
         {
-            return "Rock Question " + index;
-        }
-
-        public bool IsPlayable()
-        {
-            return (HowManyPlayers() >= 2);
+            if (HowManyPlayers() >= 2)
+            {
+                IsPlayable = true;
+            }
         }
 
         public bool Add(string playerName)
@@ -59,6 +62,7 @@ namespace Trivia
             return _players.Count;
         }
 
+        //what happens when you roll
         public void Roll(int roll)
         {
             Console.WriteLine(_players[_currentPlayer] + " is the current player");
@@ -143,14 +147,14 @@ namespace Trivia
             {
                 if (_isGettingOutOfPenaltyBox)
                 {
-                    Console.WriteLine("Answer was correct!!!!");
+                    Console.WriteLine("Answer was correct!");
                     _purses[_currentPlayer]++;
                     Console.WriteLine(_players[_currentPlayer]
                             + " now has "
                             + _purses[_currentPlayer]
                             + " Gold Coins.");
 
-                    var winner = DidPlayerWin();
+                    bool winner = DidPlayerWin()
                     _currentPlayer++;
                     if (_currentPlayer == _players.Count) _currentPlayer = 0;
 
@@ -165,14 +169,14 @@ namespace Trivia
             }
             else
             {
-                Console.WriteLine("Answer was corrent!!!!");
+                Console.WriteLine("Answer was correct!");
                 _purses[_currentPlayer]++;
                 Console.WriteLine(_players[_currentPlayer]
                         + " now has "
                         + _purses[_currentPlayer]
                         + " Gold Coins.");
 
-                var winner = DidPlayerWin();
+                bool winner = DidPlayerWin();
                 _currentPlayer++;
                 if (_currentPlayer == _players.Count) _currentPlayer = 0;
 
